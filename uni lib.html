@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="university library for SAMS"/>
+    <link rel="stylesheet" href="uni lib.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>University Library</title>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <img alt="logo" src="http://sams.edu.eg/images/sams_logo.png">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search Books...">
+            <button id="searchButton" class="search-button"><i class="fa fa-search"></i></button>
+
+            <div class="nav-menu">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="booking.html">Booking</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="content" id="bookResults">
+        <!-- Book results will be displayed here -->
+        <h2>Library Collection</h2>
+        <div id="booksList" class="books-grid">
+            <!-- Books will be loaded here -->
+            <p>Start searching or browse our collection below</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; SAMS Academy. All rights reserved.</p>
+        <p>
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Terms of Service</a>
+        </p>
+    </footer>
+
+    <script src="library.js"></script>
+</body>
+</html>
