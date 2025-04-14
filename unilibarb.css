@@ -1,0 +1,131 @@
+body{
+    padding:0;
+    margin:0;
+    font-family: monospace;
+    }
+    ul li {
+    display: inline-block;
+    position: relative;
+     }
+    ul li a {
+    display: block;
+    padding: 20px 25px;
+    color:black;
+    text-decoration: none;
+    }
+            .nav-menu ul {
+             align-items: right;
+            font-size: 16px;
+            font-family: Arial, sans-serif; 
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .nav-menu ul li {
+            list-style: none;
+            display: inline-block;
+        }
+        .nav-menu ul li a {
+            font-weight: 600;
+            color: grey;
+            padding: 10px;
+            margin: 0 5px;
+            font-size:20px;
+            cursor: pointer;
+            transition: 0.5s;
+            z-index: -1;
+            text-align: left;
+        }
+        .navbar ul li::after{
+            content: '';
+            height: 3px;
+            width: 0;
+            background: #4f6491;
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            transition: 0.5s;
+           
+        }
+        .navbar ul li:hover::after{
+            width: 100%;
+        }
+    
+        .nav-menu {
+            display: flex;
+            justify-content: center; 
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            z-index: 999;
+        }
+        
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            gap: 1px;
+            margin-right: 20px;
+        }
+        
+        .nav-menu ul li a {
+            text-decoration: none;
+            color: #4f6491;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        
+        
+        
+        .search-bar {
+            width: 250px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: right;
+
+        
+            
+        }
+        
+.nav-button .btn {
+    width:150px;
+    height:20px;
+    font-weight:600;
+    border: none;
+    border-radius: 30px; 
+    cursor: pointer;
+  }
+
+   body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+}
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+}
+.footer a {
+    color: #f46161;
+    text-decoration: none;
+    margin: 0 5px;
+}
