@@ -5,30 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Reservation System</title>
     <link rel="stylesheet" href="booking.css">
-    </head>
+</head>
 <body>
-
     <header>
         <h1>Library Reservation System</h1>
-     </header>
-
+        <nav>
+            <a href="uni lib.html">Back to Library</a>
+        </nav>
+    </header>
 
     <section id="books" class="reservation">
         <h2>Reserve a Book</h2>
-        <form action="submit.php" method="post">
-            <input type="text" name="bookTitle" placeholder="Enter Book Title" required>
-            <input type="text" name="bookUser" placeholder="Enter Your Name" required>
-            <button type="submit">Reserve</button>
+        <div id="selectedBook">
+            <!-- Selected book details will appear here -->
+        </div>
+        <form id="reservationForm">
+            <input type="hidden" id="bookId" name="bookId">
+            <input type="text" id="memberName" name="memberName" placeholder="Enter Your Name" required>
+            <input type="email" id="memberEmail" name="memberEmail" placeholder="Enter Your Email" required>
+            <input type="text" id="memberContact" name="memberContact" placeholder="Enter Your Contact Number" required>
+            <button type="submit" id="reserveButton">Reserve</button>
         </form>
-       
+        <div id="reservationStatus" class="status-message"></div>
     </section>
-    <h3>Borrowing
-        Patrons with a valid SAMS ID card who are eligible to borrow books 
-        Self-checkout units will issue a receipt that should be kept as a reminder of the due date.
-        If assistance is needed, do not hesitate to contact the circulation staff members.
-        <br>
-    You are accountable for items borrowed on your ID. Do not let others use your ID card, or borrow items on behalf of others.
-     For applicable policies, refer to the University Policies page.
-    </h3>
+    
+    <section class="info-section">
+        <h3>Borrowing Information</h3>
+        <ul>
+            <li>Patrons with a valid SAMS ID card who are eligible to borrow books.</li>
+            <li>Self-checkout units will issue a receipt that should be kept as a reminder of the due date.</li>
+            <li>If assistance is needed, do not hesitate to contact the circulation staff members.</li>
+            <li>You are accountable for items borrowed on your ID. Do not let others use your ID card, or borrow items on behalf of others.</li>
+            <li>For applicable policies, refer to the University Policies page.</li>
+        </ul>
+    </section>
+
+    <script src="booking.js"></script>
 </body>
 </html>

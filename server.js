@@ -2,6 +2,11 @@ const express = require('express');
 const mysql = require('mysql2');
 const app = express();
 const expressPort = 3000; 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = 'your_jwt_secret_key';
+
 
 app.use(express.json());
 
@@ -253,6 +258,91 @@ const deleteMember = async (req, res) => {
     }
 };
 
+// User registration
+const registerUser = async (req, res) => {
+    const { username, password, email } = req.body;
+    
+    if (!username || !password || !email) {
+        return res.status(400).json({ error: 'Username, password, and email are required.' });
+    }
+    
+    try {
+        // Check if username already exists
+        const [existingUsers] = await pool.execute(
+            'SELECT * FROM users WHERE username = ?',
+            [username]
+        );
+        
+        if (existingUsers.length > 0) {
+            return res.status(409).json({ error: 'Username already exists.' });
+        }
+        
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Insert new user as librarian (default role)
+        const [result] = await pool.execute(
+            'INSERT INTO users (username, password, role) VALUES (?, ?, "librarian")',
+            [username, hashedPassword]
+        );
+        
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        handleError(res, error, 'Registration failed.');
+    }
+};
+
+// User login
+const loginUser = async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required.' });
+    }
+    
+    try {
+        // Find user by username
+        const [users] = await pool.execute(
+            'SELECT * FROM users WHERE username = ?',
+            [username]
+        );
+        
+        if (users.length === 0) {
+            return res.status(401).json({ error: 'Invalid credentials.' });
+        }
+        
+        const user = users[0];
+        
+        // Compare passwords
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid credentials.' });
+        }
+        
+        // Update last login time
+        await pool.execute(
+            'UPDATE users SET last_login = NOW() WHERE user_id = ?',
+            [user.user_id]
+        );
+        
+        // Generate JWT token
+        const token = jwt.sign(
+            { user_id: user.user_id, username: user.username, role: user.role },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+        
+        res.status(200).json({
+            message: 'Login successful',
+            username: user.username,
+            role: user.role,
+            token: token
+        });
+    } catch (error) {
+        handleError(res, error, 'Login failed.');
+    }
+};
 
 // Borrow a book
 const borrowBook = async (req, res) => {
@@ -394,6 +484,10 @@ const getLoansByMember = async (req, res) => {
         handleError(res, error, 'Failed to fetch member loans.');
     }
 };
+
+// login
+app.post('/api/register', registerUser);
+app.post('/api/login', loginUser);
 
 // Book
 app.post('/api/books', createBook);
