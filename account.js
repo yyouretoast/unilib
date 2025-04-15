@@ -1,92 +1,47 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle signup form submission
-    const signupForm = document.getElementById('signupForm');
-    signupForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const username = document.getElementById('signupUsername').value;
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
-        
-        // Send data to server
-        fetch('http://localhost:3000/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username,
-                email: email,
-                password: password
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Registration failed');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const statusElement = document.getElementById('signupStatus');
-            statusElement.classList.add('success');
-            statusElement.textContent = 'Registration successful! You can now login.';
-            
-            // Reset the form
-            signupForm.reset();
-        })
-        .catch(error => {
-            console.error('Error during registration:', error);
-            const statusElement = document.getElementById('signupStatus');
-            statusElement.classList.add('error');
-            statusElement.textContent = 'Registration failed. Please try again.';
-        });
-    });
-    
-    // Handle login form submission
+    // Login form handler
     const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', function(e) {
+    
+    loginForm.onsubmit = function(e) {
         e.preventDefault();
         
         const username = document.getElementById('loginUsername').value;
         const password = document.getElementById('loginPassword').value;
         
-        // Send data to server
-        fetch('http://localhost:3000/api/login', {
+        if(!username || !password) {
+            showMessage('Please fill all fields', 'error');
+            return;
+        }
+        
+        // Simple login request
+        fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 username: username,
                 password: password
             })
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            // Store user data in localStorage for session management
-            localStorage.setItem('user', JSON.stringify({
-                username: data.username,
-                role: data.role,
-                token: data.token
-            }));
-            
-            // Redirect to appropriate page based on role
-            if (data.role === 'administrator' || data.role === 'librarian') {
-                window.location.href = 'admin-dashboard.html';
+            if(data.message === 'Login successful') {
+                showMessage('Login successful!', 'success');
+                window.location.href = 'home.html';
             } else {
-                window.location.href = 'user-dashboard.html';
+                showMessage('Login failed', 'error');
             }
         })
         .catch(error => {
-            console.error('Error during login:', error);
-            const statusElement = document.getElementById('loginStatus');
-            statusElement.classList.add('error');
-            statusElement.textContent = 'Login failed. Please check your credentials.';
+            showMessage('Error connecting to server', 'error');
         });
-    });
+    };
+    
+    // Simple message display
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('loginStatus');
+        messageDiv.textContent = message;
+        messageDiv.className = 'status-message ' + type;
+    }
 });

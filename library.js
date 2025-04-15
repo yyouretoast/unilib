@@ -1,84 +1,64 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Load all books when page loads
+    // Load books when page loads
     fetchAllBooks();
     
-    // Setup search functionality
+    // Search button click
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
     
     searchButton.addEventListener('click', function() {
-        performSearch();
-    });
-    
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
-    
-    // Function to fetch all books
-    function fetchAllBooks() {
-        fetch('http://localhost:3000/api/books')
-            .then(response => response.json())
-            .then(books => {
-                displayBooks(books);
-            })
-            .catch(error => {
-                console.error('Error fetching books:', error);
-                document.getElementById('booksList').innerHTML = '<p>Error loading books. Please try again later.</p>';
-            });
-    }
-    
-    // Function to search books
-    function performSearch() {
         const searchTerm = searchInput.value.trim();
-        
         if (searchTerm === '') {
             fetchAllBooks();
-            return;
+        } else {
+            searchBooks(searchTerm);
         }
-        
-        // Query the API with search term
-        fetch(`http://localhost:3000/api/books/search?title=${encodeURIComponent(searchTerm)}`)
+    });
+    
+    // Simple fetch function
+    function fetchAllBooks() {
+        fetch('http://localhost:3000/books')
             .then(response => response.json())
-            .then(books => {
-                displayBooks(books);
-            })
+            .then(books => displayBooks(books))
             .catch(error => {
-                console.error('Error searching books:', error);
-                document.getElementById('booksList').innerHTML = '<p>Error searching books. Please try again later.</p>';
+                console.error('Error:', error);
+                document.getElementById('booksList').innerHTML = 'Error loading books.';
             });
     }
     
-    // Function to display books
+    // Simple search function
+    function searchBooks(term) {
+        fetch(`http://localhost:3000/books/search?title=${term}`)
+            .then(response => response.json())
+            .then(books => displayBooks(books))
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('booksList').innerHTML = 'Error searching books.';
+            });
+    }
+    
+    // Display books simply
     function displayBooks(books) {
-        const booksListElement = document.getElementById('booksList');
+        const booksList = document.getElementById('booksList');
         
         if (books.length === 0) {
-            booksListElement.innerHTML = '<p>No books found matching your search.</p>';
+            booksList.innerHTML = '<p>No books found.</p>';
             return;
         }
         
-        let booksHTML = '';
-        books.forEach(book => {
-            booksHTML += `
+        let html = '';
+        for(let book of books) {
+            html += `
                 <div class="book-card">
-                    <div class="book-cover">
-                        <img src="/api/placeholder/120/180" alt="${book.title} cover">
-                    </div>
-                    <div class="book-info">
-                        <h3>${book.title}</h3>
-                        <p class="author">by ${book.author}</p>
-                        <p class="genre">${book.genre || 'Uncategorized'}</p>
-                        <p class="status ${book.available_quantity > 0 ? 'available' : 'unavailable'}">
-                            ${book.available_quantity > 0 ? 'Available' : 'Unavailable'}
-                        </p>
-                        <a href="booking.html?bookId=${book.book_id}" class="reserve-btn">Reserve</a>
-                    </div>
+                    <h3>${book.title}</h3>
+                    <p>Author: ${book.author}</p>
+                    <p>ISBN: ${book.isbn}</p>
+                    <a href="booking.html?bookId=${book.book_id}">
+                        <button>Reserve Book</button>
+                    </a>
                 </div>
             `;
-        });
-        
-        booksListElement.innerHTML = booksHTML;
+        }
+        booksList.innerHTML = html;
     }
 });
