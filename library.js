@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
         booksList.innerHTML = books.map(book => `
             <div class="book-card">
+                <img src="${book.cover_image || 'default-book-cover.jpg'}" alt="${book.title}" class="book-cover">
                 <span class="book-status ${book.available_quantity > 0 ? 'available' : 'borrowed'}">
                     ${book.available_quantity > 0 ? 'Available' : 'Borrowed'}
                 </span>
@@ -97,7 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p><strong>Author:</strong> ${book.author || 'Unknown'}</p>
                 <p><strong>ISBN:</strong> ${book.isbn || 'N/A'}</p>
                 <p><strong>Genre:</strong> ${book.genre || 'Not specified'}</p>
-                <p><strong>Available Copies:</strong> ${book.available_quantity || 0}</p>
+                <p><strong>Language:</strong> ${book.language || 'English'}</p>
+                <p><strong>Published:</strong> ${book.publication_year || 'N/A'}</p>
+                <p><strong>Available Copies:</strong> ${book.available_quantity || 0}/${book.quantity || 0}</p>
+                <p><strong>Rating:</strong> ${book.rating ? book.rating + '/5' : 'No ratings'}</p>
+                <div class="book-description">${book.description || 'No description available.'}</div>
                 <button 
                     onclick="window.location.href='booking.html?bookId=${book.book_id}'"
                     ${book.available_quantity === 0 ? 'disabled' : ''}>
