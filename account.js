@@ -75,16 +75,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({ username, password })
             });
-
+    
             const data = await response.json();
             if (response.ok) {
+                // Store user data
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('userId', data.user_id);
+                localStorage.setItem('username', data.username);
+                localStorage.setItem('role', data.role);
+    
                 statusMessage.textContent = 'Login successful!';
                 statusMessage.className = 'status-message success';
-                // Store auth token
-                localStorage.setItem('authToken', data.token);
-                // Redirect to library page
+    
+                // Redirect based on role
                 setTimeout(() => {
-                    window.location.href = 'unilib.html';
+                    if (data.role === 'administrator') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
                 }, 1000);
             } else {
                 throw new Error(data.message || 'Login failed');

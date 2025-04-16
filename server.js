@@ -213,7 +213,14 @@ app.post('/api/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
         
-        res.json({ message: 'Login successful' });
+        const user = results[0];
+        res.json({ 
+            message: 'Login successful',
+            user_id: user.user_id,
+            username: user.username,
+            role: user.role,
+            token: 'dummy-token' // In production, use proper JWT token
+        });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Error during login' });

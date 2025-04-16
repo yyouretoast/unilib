@@ -15,5 +15,10 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "assert": "^2.1.0",
+    "chromedriver": "^135.0.1",
+    "selenium-webdriver": "^4.31.0"
   }
 }

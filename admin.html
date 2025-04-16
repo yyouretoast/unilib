@@ -1,24 +1,83 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&family=Lora:wght@400;500&display=swap">
-    <title>Library Admin Dashboard</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-    <div class="admin-panel">
-        <h2>Admin Dashboard</h2>
-        <div class="stats">...</div>
-        <div class="book-management">...</div>
-        <div class="user-management">...</div>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="admin-info">
+                <img src="admin-avatar.jpg" alt="Admin Avatar" class="avatar">
+                <h3>Administrator</h3>
+            </div>
+            <nav class="admin-nav">
+                <a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="#books"><i class="fas fa-books"></i> Manage Books</a>
+                <a href="#users"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="#loans"><i class="fas fa-hand-holding"></i> Loans</a>
+                <a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a>
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h2>Admin Dashboard</h2>
+                <div class="header-actions">
+                    <button id="addBookBtn" class="primary-btn">
+                        <i class="fas fa-plus"></i> Add New Book
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <section class="stats-overview">
+                    <div class="stat-card">
+                        <h3>Total Books</h3>
+                        <p id="totalBooks">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Users</h3>
+                        <p id="activeUsers">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Current Loans</h3>
+                        <p id="currentLoans">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Overdue</h3>
+                        <p id="overdueLoans">0</p>
+                    </div>
+                </section>
+
+                <section class="books-management">
+                    <h3>Book Management</h3>
+                    <div class="table-container">
+                        <table id="booksTable">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>ISBN</th>
+                                    <th>Available</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Books will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
+
+    <script src="admin.js"></script>
 </body>
-<footer class="footer">
-    <p>&copy; SAMS Academy. All rights reserved.</p>
-    <div class="footer-links">
-        <a href="#" data-translate="privacy">Privacy Policy</a>
-        <a href="#" data-translate="terms">Terms of Service</a>
-        <a href="#" data-translate="contact">Contact Us</a>
-    </div>
-</footer>
 </html>

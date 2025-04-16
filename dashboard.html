@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="user-info">
+                <img src="default-avatar.jpg" alt="User Avatar" class="avatar">
+                <h3 id="userName">Loading...</h3>
+                <p id="userRole">Student</p>
+            </div>
+            <nav class="dashboard-nav">
+                <a href="#overview" class="active"><i class="fas fa-home"></i> Overview</a>
+                <a href="#borrowed"><i class="fas fa-book"></i> Borrowed Books</a>
+                <a href="#reservations"><i class="fas fa-bookmark"></i> Reservations</a>
+                <a href="#history"><i class="fas fa-history"></i> History</a>
+                <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+                <a href="#notifications"><i class="fas fa-bell"></i> Notifications</a>
+            </nav>
+            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h2>Welcome Back, <span id="userGreeting">User</span>!</h2>
+                <div class="header-actions">
+                    <button id="notificationBtn" class="icon-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section id="overview" class="dashboard-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Currently Borrowed</h3>
+                            <p id="borrowedCount">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Reservations</h3>
+                            <p id="reservationsCount">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Due Soon</h3>
+                            <p id="dueSoonCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div id="activityList" class="activity-list">
+                            <!-- Activities will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
