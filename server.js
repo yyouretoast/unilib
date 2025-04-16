@@ -1,10 +1,18 @@
 const express = require('express');
 const mysql = require('mysql2');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
 // Basic middleware
+app.use(cors());
 app.use(express.json());
+
+app.use(express.static('public'));
+app.use('/css', express.static(__dirname + '/css'));
+app.use('/js', express.static(__dirname + '/js'));
+app.use('/images', express.static(__dirname + '/images'));
+
 
 // Database connection
 const db = mysql.createConnection({

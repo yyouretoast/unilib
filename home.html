@@ -1,38 +1,51 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>university Library  </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="title">University Library</title>
     <link rel="stylesheet" href="home.css">
-    <script src="https://kit.fontawesome.com/2eedee4e22.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&family=Lora:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
-
 <body>
-  <header>
-    <div class="navbar">
-        <img src="http://sams.edu.eg/images/sams_logo.png" class="logo">
-        <ul>
-          <li><a href="about us.html">contact us</a></li>
-          <li><a href="account.html">Account</a></li>
-          <li><a href="homearb.html">اللغة العربية</a></li>
-         </ul>
-         </div>
-  </header>
-  <section>
-  <div class="content">
-  <h1>SAMS Library</h1>
-  <p>Search the Library's collection of books,<br> find subject-specific resources.</p>
-  
-  <div class="container">
-  <div class="search-bar">
-  <a href="uni lib.html">
-  <button class="search-button">
-  <i class="fa fa-search"></i> SEARCH
-  </button>
-  </a>
+    <header>
+        <div class="navbar">
+            <img src="http://sams.edu.eg/images/sams_logo.png" class="logo" alt="SAMS Logo">
+            <ul>
+                <li><a href="contact.html" data-translate="contact">Contact Us</a></li>
+                <li><a href="account.html" data-translate="account">Account</a></li>
+                <li>
+                    <button id="langToggle" class="lang-toggle">
+                        <span class="lang-text">العربية</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    <section>
+        <div class="content">
+            <h1 data-translate="welcome">SAMS Library</h1>
+            <p data-translate="welcomeText">Search the Library's collection of books, find subject-specific resources.</p>
+            <div class="container">
+                <div class="search-bar">
+                    <a href="unilib.html">
+                        <button class="search-button">
+                            <i class="fa fa-search"></i> 
+                            <span data-translate="searchButton">SEARCH</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  </div>  
-  </div>
-  </div>
-</section>
+    <script src="translations.js"></script>
+    <footer class="footer">
+        <p>&copy; SAMS Academy. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="privacy.html" data-translate="privacy">Privacy Policy</a>
+            <a href="terms.html" data-translate="terms">Terms of Service</a>
+            <a href="contact.html" data-translate="contact">Contact Us</a>
+        </div>
+
 </body>
 </html>

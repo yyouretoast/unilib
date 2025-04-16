@@ -1,3 +1,15 @@
+:root {
+    --primary-color: #4f6491;
+    --secondary-color: #3a4e6b;
+    --bg-color: #f8f9fa;
+    --text-color: #2c3e50;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+    --heading-font: 'Playfair Display', serif;
+    --body-font: 'Source Sans Pro', sans-serif;
+    --accent-font: 'Lora', serif;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -10,6 +22,19 @@ header {
     color: white;
     padding: 20px;
     text-align: center;
+}
+
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 25px;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 nav {
@@ -131,6 +156,22 @@ form button:hover {
 .info-section li {
     margin-bottom: 8px;
     line-height: 1.5;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 2px solid #eee;
+    border-radius: var(--border-radius);
+    font-family: var(--body-font);
+    transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 100, 145, 0.1);
 }
 
 @media (max-width: 768px) {

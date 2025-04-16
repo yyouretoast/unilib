@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="contact">Contact Us</title>
+    <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&family=Lora:wght@400;500&display=swap">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <img src="http://sams.edu.eg/images/sams_logo.png" class="logo" alt="SAMS Logo">
+            <ul>
+                <li><a href="home.html" data-translate="home">Home</a></li>
+                <li><a href="contact.html" data-translate="contact">Contact Us</a></li>
+                <li><a href="account.html" data-translate="account">Account</a></li>
+                <li>
+                    <button id="langToggle" class="lang-toggle">
+                        <span class="lang-text">العربية</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="content">
+        <h1 data-translate="contactUs">Contact Us</h1>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-box">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3 data-translate="address">Address</h3>
+                    <p>Nile Corniche, Maadi Entrance No. (1) - Cairo</p>
+                </div>
+                
+                <div class="info-box">
+                    <i class="fas fa-phone"></i>
+                    <h3 data-translate="phone">Phone</h3>
+                    <p>23787630 – 23581033</p>
+                </div>
+                
+                <div class="info-box">
+                    <i class="fas fa-envelope"></i>
+                    <h3 data-translate="email">Email</h3>
+                    <p>info@sadatacademy.edu.eg</p>
+                </div>
+                
+                <div class="contact-form">
+                    <h2 data-translate="sendMessage">Send Message</h2>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" data-translate="name" placeholder="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" data-translate="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea data-translate="typeMessage" placeholder="Type your message" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn" data-translate="send">Send</button>
+                    </form>
+                </div>
+            </main>
+
+    <footer class="footer">
+        <p>&copy; SAMS Academy. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/sams.edu.eg" target="_blank">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.twitter.com/sadatacademy" target="_blank">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com/sadatacademy" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script src="translations.js"></script>
+</body>
+</html>
