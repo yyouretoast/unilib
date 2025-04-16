@@ -2,82 +2,86 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <meta name="description" content="university library for SAMS"/>
-    <link rel="stylesheet" href="unilib.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Library</title>
+    <link rel="stylesheet" href="unilib.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="navbar">
-            
-            <img alt="logo" src="http://sams.edu.eg/images/sams_logo.png">
+            <img src="http://sams.edu.eg/images/sams_logo.png" class="logo" alt="SAMS Logo">
             <div class="search-container">
-                <input type="text" id="searchInput" class="search-bar" placeholder="Search Books...">
+                <input type="text" id="searchInput" class="search-bar" data-translate="search" placeholder="Search Books...">
                 <button id="searchButton" class="search-button">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
-            <div class="nav-menu">
-                <ul>
-                    <li><a href="home.html">Home</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                    <li><a href="booking.html">Booking</a></li>
-                    <li>
-                        <button id="langToggle" class="lang-toggle">
-                            <span class="lang-text">العربية</span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="home.html" data-translate="home">Home</a></li>
+                <li><a href="contact.html" data-translate="contact">Contact Us</a></li>
+                <li><a href="booking.html" data-translate="booking">Booking</a></li>
+                <li><a href="account.html" data-translate="account">Account</a></li>
+                <li>
+                    <button id="langToggle" class="lang-toggle">
+                        <span class="lang-text">العربية</span>
+                    </button>
+                </li>
+            </ul>
         </div>
     </header>
 
-    <div class="content" id="bookResults">
-        <!-- Book results will be displayed here -->
-        <h2>Library Collection</h2>
-        <!-- Add after the h2 title -->
-<div class="filter-controls">
-    <select id="genreFilter" class="filter-select">
-        <option value="">All Genres</option>
-        <option value="Fiction">Fiction</option>
-        <option value="Science Fiction">Science Fiction</option>
-        <option value="Fantasy">Fantasy</option>
-        <option value="Mystery">Mystery</option>
-        <option value="Thriller">Thriller</option>
-        <option value="Romance">Romance</option>
-        <option value="Non-Fiction">Non-Fiction</option>
-        <option value="Biography">Biography</option>
-        <option value="History">History</option>
-        <option value="Science">Science</option>
-        <option value="Technology">Technology</option>
-        <option value="Philosophy">Philosophy</option>
-        <option value="Psychology">Psychology</option>
-        <option value="Business">Business</option>
-        <option value="Art">Art</option>
-    </select>
-    
-    <select id="sortBy" class="filter-select">
-        <option value="title">Sort by Title</option>
-        <option value="author">Sort by Author</option>
-        <option value="year">Sort by Year</option>
-    </select>
-</div>
-        <div id="booksList" class="books-grid">
-            <!-- Books will be loaded here -->
-            <p>Start searching or browse our collection below</p>
+    <main class="content">
+        <h1 data-translate="libraryCollection">Library Collection</h1>
+        
+        <div class="filter-controls">
+            <select id="genreFilter" class="filter-select">
+                <option value="">All Genres</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Science Fiction">Science Fiction</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Romance">Romance</option>
+                <option value="Non-Fiction">Non-Fiction</option>
+                <option value="Biography">Biography</option>
+                <option value="History">History</option>
+                <option value="Science">Science</option>
+                <option value="Technology">Technology</option>
+                <option value="Philosophy">Philosophy</option>
+                <option value="Psychology">Psychology</option>
+                <option value="Business">Business</option>
+                <option value="Art">Art</option>
+            </select>
+            
+            <select id="sortBy" class="filter-select">
+                <option value="title">Sort by Title</option>
+                <option value="author">Sort by Author</option>
+                <option value="year">Sort by Year</option>
+            </select>
         </div>
-    </div>
+
+        <div id="booksList" class="books-grid">
+            <!-- Books will be loaded here by library.js -->
+        </div>
+    </main>
 
     <footer class="footer">
         <p>&copy; SAMS Academy. All rights reserved.</p>
         <div class="footer-links">
-            <a href="#" data-translate="privacy">Privacy Policy</a>
-            <a href="#" data-translate="terms">Terms of Service</a>
-            <a href="#" data-translate="contact">Contact Us</a>
+            <a href="privacy.html" data-translate="privacy">Privacy Policy</a>
+            <a href="terms.html" data-translate="terms">Terms of Service</a>
+            <a href="contact.html" data-translate="contact">Contact Us</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/sams.edu.eg" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.twitter.com/sadatacademy" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/sadatacademy" target="_blank"><i class="fab fa-instagram"></i></a>
         </div>
     </footer>
 
+    <script src="translations.js"></script>
     <script src="library.js"></script>
 </body>
 </html>

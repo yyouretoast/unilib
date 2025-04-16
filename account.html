@@ -1,46 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&family=Lora:wght@400;500&display=swap">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="account">Account</title>
     <link rel="stylesheet" href="account.css">
-    <title>Library Account</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&family=Lora:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-    <div class="main">
-        <input type="checkbox" id="chk" aria-hidden="true">
-        <div class="signup">
-            <form id="signupForm">
-                <label for="chk" aria-hidden="true">Sign up</label>
-                <input type="text" id="signupUsername" name="username" placeholder="Username" required>
-                <input type="email" id="signupEmail" name="email" placeholder="Email" required>
-                <input type="password" id="signupPassword" name="password" placeholder="Password" required>
-                <button type="submit">Sign up</button>
-                <div id="signupStatus" class="status-message"></div>
-            </form>
+    <header>
+        <div class="navbar">
+            <img src="http://sams.edu.eg/images/sams_logo.png" class="logo" alt="SAMS Logo">
+            <ul>
+                <li><a href="home.html" data-translate="home">Home</a></li>
+                <li><a href="contact.html" data-translate="contact">Contact Us</a></li>
+                <li><a href="account.html" data-translate="account">Account</a></li>
+                <li>
+                    <button id="langToggle" class="lang-toggle">
+                        <span class="lang-text">العربية</span>
+                    </button>
+                </li>
+            </ul>
         </div>
+    </header>
 
-        <div class="login">
-            <form id="loginForm">
-                <label for="chk" aria-hidden="true">Login</label>
-                <input type="text" id="loginUsername" name="username" placeholder="Username" required>
-                <input type="password" id="loginPassword" name="password" placeholder="Password" required>
-                <button type="submit">Login</button>
-                <div id="loginStatus" class="status-message"></div>
-            </form>
+    <main class="content">
+        <h1 data-translate="accountTitle">Account Access</h1>
+        
+        <div class="auth-container">
+            <div class="auth-card">
+                <div id="statusMessage" class="status-message"></div>
+                <div class="auth-toggle">
+                    <button class="toggle-btn active" data-form="login">Login</button>
+                    <button class="toggle-btn" data-form="signup">Sign Up</button>
+                </div>
+        
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <input type="text" id="loginUsername" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+        
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <input type="text" id="signupUsername" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="signupEmail" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signupPassword" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Sign Up</button>
+                </form>
+                <div id="statusMessage" class="status-message"></div>
+            </div>
         </div>
-    </div>
-    <div class="back-to-home">
-        <a href="home.html">Back to Home</a>
-    </div>
-    <script src="account.js"></script> 
+        </main>
+
     <footer class="footer">
         <p>&copy; SAMS Academy. All rights reserved.</p>
         <div class="footer-links">
-            <a href="#" data-translate="privacy">Privacy Policy</a>
-            <a href="#" data-translate="terms">Terms of Service</a>
-            <a href="#" data-translate="contact">Contact Us</a>
+            <a href="privacy.html" data-translate="privacy">Privacy Policy</a>
+            <a href="terms.html" data-translate="terms">Terms of Service</a>
+            <a href="contact.html" data-translate="contact">Contact Us</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/sams.edu.eg" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.twitter.com/sadatacademy" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/sadatacademy" target="_blank"><i class="fab fa-instagram"></i></a>
         </div>
     </footer>
+
+    <script src="translations.js"></script>
+    <script src="account.js"></script>
 </body>
 </html>

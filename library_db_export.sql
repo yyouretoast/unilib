@@ -128,7 +128,7 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `email` varchar(255) UNIQUE,
+  `email` varchar(255) UNIQUE NOT NULL,
   `role` enum('librarian','administrator') NOT NULL DEFAULT 'librarian',
   `last_login` timestamp NULL DEFAULT NULL,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,

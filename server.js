@@ -1,27 +1,20 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
-const app = express();
-const port = 3000;
 
-// Basic middleware
+const app = express();
+const port = 3000; // Add this line to define the port
+
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static('public'));
-app.use('/css', express.static(__dirname + '/css'));
-app.use('/js', express.static(__dirname + '/js'));
-app.use('/images', express.static(__dirname + '/images'));
-
-
-// Database connection
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'library_db',
     port: 3308
-});
+}).promise();
 
 // Test database connection
 db.connect(err => {
@@ -140,7 +133,15 @@ function loginUser(req, res) {
 app.post('/login', loginUser);
 
 // Book routes
-app.get('/books', getAllBooks);
+app.get('/books', async (req, res) => {
+    try {
+        const [books] = await db.query('SELECT * FROM books');
+        res.json(books);
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        res.status(500).json({ message: 'Error loading books', error: error.message });
+    }
+});
 app.get('/books/:bookId', getBookById);
 app.post('/books', addBook);
 
@@ -157,7 +158,69 @@ app.get('/', (req, res) => {
     res.send('Welcome to Library Management System');
 });
 
+app.post('/api/signup', async (req, res) => {
+    const { username, email, password } = req.body;
+    
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: 'Please provide all required fields' });
+    }
+
+    try {
+        // First check if user exists
+        const [existingUsers] = await db.query(
+            'SELECT username, email FROM users WHERE username = ? OR email = ?',
+            [username, email]
+        );
+
+        if (existingUsers.length > 0) {
+            const exists = existingUsers[0];
+            if (exists.username === username) {
+                return res.status(400).json({ message: 'Username already exists' });
+            }
+            if (exists.email === email) {
+                return res.status(400).json({ message: 'Email already exists' });
+            }
+        }
+
+        // Insert new user
+        await db.query(
+            'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+            [username, email, password]
+        );
+
+        res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+        console.error('Signup error:', error);
+        res.status(500).json({ 
+            message: 'Error creating user',
+            details: error.message 
+        });
+    }
+});
+
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Please provide username and password' });
+    }
+
+    try {
+        const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
+        const [results] = await db.execute(query, [username, password]);
+        
+        if (results.length === 0) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        
+        res.json({ message: 'Login successful' });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Error during login' });
+    }
+});
+
 // Start server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
 });

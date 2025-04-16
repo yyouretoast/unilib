@@ -19,12 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             showLoading();
             const response = await fetch('http://localhost:3000/books');
-            if (!response.ok) throw new Error('Network response was not ok');
-            allBooks = await response.json();
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to load books');
+            }
+            const books = await response.json();
+            if (!Array.isArray(books)) {
+                throw new Error('Invalid data received from server');
+            }
+            allBooks = books;
             filterAndDisplayBooks();
         } catch (error) {
             console.error('Error:', error);
-            showError('Error loading books. Please try again.');
+            showError(`Error loading books: ${error.message}`);
         }
     }
 
@@ -77,20 +84,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Display books
     function displayBooks(books) {
         if (!books || books.length === 0) {
-            booksList.innerHTML = '<div class="no-results">No books found matching your criteria.</div>';
+            booksList.innerHTML = '<div class="no-results">No books found in the library.</div>';
             return;
         }
-
+    
         booksList.innerHTML = books.map(book => `
             <div class="book-card">
                 <span class="book-status ${book.available_quantity > 0 ? 'available' : 'borrowed'}">
                     ${book.available_quantity > 0 ? 'Available' : 'Borrowed'}
                 </span>
-                <h3>${book.title}</h3>
-                <p><strong>Author:</strong> ${book.author}</p>
-                <p><strong>ISBN:</strong> ${book.isbn}</p>
+                <h3>${book.title || 'Untitled'}</h3>
+                <p><strong>Author:</strong> ${book.author || 'Unknown'}</p>
+                <p><strong>ISBN:</strong> ${book.isbn || 'N/A'}</p>
                 <p><strong>Genre:</strong> ${book.genre || 'Not specified'}</p>
-                <p><strong>Available Copies:</strong> ${book.available_quantity}</p>
+                <p><strong>Available Copies:</strong> ${book.available_quantity || 0}</p>
                 <button 
                     onclick="window.location.href='booking.html?bookId=${book.book_id}'"
                     ${book.available_quantity === 0 ? 'disabled' : ''}>
