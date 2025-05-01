@@ -28,14 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const statusMessage = document.getElementById('statusMessage');
-        statusMessage.textContent = 'Signing up...'; // Add loading message
+        statusMessage.textContent = 'Signing up...';
         statusMessage.className = 'status-message info';
-    
+
         try {
             const response = await fetch('http://localhost:3000/api/signup', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     username: document.getElementById('signupUsername').value,
@@ -43,21 +44,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     password: document.getElementById('signupPassword').value
                 })
             });
-    
+
             const data = await response.json();
             
             if (!response.ok) {
                 throw new Error(data.message || 'Signup failed');
             }
-    
+
             statusMessage.textContent = 'Sign up successful! Please login.';
             statusMessage.className = 'status-message success';
             signupForm.reset();
-            // Switch to login form
-            document.querySelector('[data-form="login"]').click();
+            
+            // Auto switch to login form after successful signup
+            setTimeout(() => {
+                document.querySelector('[data-form="login"]').click();
+            }, 1500);
+
         } catch (error) {
             console.error('Signup error:', error);
-            statusMessage.textContent = error.message;
+            statusMessage.textContent = error.message || 'Failed to connect to server';
             statusMessage.className = 'status-message error';
         }
     });

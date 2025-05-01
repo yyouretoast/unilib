@@ -6,6 +6,7 @@
     <title>User Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="bookManager.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -22,6 +23,7 @@
                 <a href="#history"><i class="fas fa-history"></i> History</a>
                 <a href="#profile"><i class="fas fa-user"></i> Profile</a>
                 <a href="#notifications"><i class="fas fa-bell"></i> Notifications</a>
+                <a href="#books"><i class="fas fa-book-open"></i> Manage Books</a>
             </nav>
             <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </aside>
@@ -61,10 +63,129 @@
                         </div>
                     </div>
                 </section>
+
+                <section id="books" class="dashboard-section">
+                    <h2>Book Management</h2>
+                    <button class="btn-primary" onclick="document.getElementById('addBookModal').style.display='block'">
+                        Add New Book
+                    </button>
+                    
+                    <div id="booksList" class="books-grid">
+                        <!-- Books will be loaded here -->
+                    </div>
+
+                    <!-- Add Book Modal -->
+                    <div id="addBookModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <h3>Add New Book</h3>
+                            <form id="addBookForm">
+                                <div class="form-group">
+                                    <label for="title">Title*</label>
+                                    <input type="text" id="title" name="title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="author">Author*</label>
+                                    <input type="text" id="author" name="author" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="isbn">ISBN*</label>
+                                    <input type="text" id="isbn" name="isbn" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="publication_year">Publication Year</label>
+                                    <input type="number" id="publication_year" name="publication_year">
+                                </div>
+                                <div class="form-group">
+                                    <label for="quantity">Quantity*</label>
+                                    <input type="number" id="quantity" name="quantity" required min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="genre">Genre</label>
+                                    <input type="text" id="genre" name="genre">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea id="description" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="language">Language</label>
+                                    <input type="text" id="language" name="language" value="English">
+                                </div>
+                                <div class="form-group">
+                                    <label for="publisher">Publisher</label>
+                                    <input type="text" id="publisher" name="publisher">
+                                </div>
+                                <div class="form-group">
+                                    <label for="page_count">Page Count</label>
+                                    <input type="number" id="page_count" name="page_count" min="0">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Add Book</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Edit Book Modal -->
+                    <div id="editModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <h3>Edit Book</h3>
+                            <form id="editBookForm">
+                                <input type="hidden" id="editBookId" name="book_id">
+                                <div class="form-group">
+                                    <label for="editTitle">Title*</label>
+                                    <input type="text" id="editTitle" name="title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAuthor">Author*</label>
+                                    <input type="text" id="editAuthor" name="author" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editIsbn">ISBN*</label>
+                                    <input type="text" id="editIsbn" name="isbn" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPublicationYear">Publication Year</label>
+                                    <input type="number" id="editPublicationYear" name="publication_year">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQuantity">Quantity*</label>
+                                    <input type="number" id="editQuantity" name="quantity" required min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editGenre">Genre</label>
+                                    <input type="text" id="editGenre" name="genre">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editDescription">Description</label>
+                                    <textarea id="editDescription" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editLanguage">Language</label>
+                                    <input type="text" id="editLanguage" name="language">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPublisher">Publisher</label>
+                                    <input type="text" id="editPublisher" name="publisher">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPageCount">Page Count</label>
+                                    <input type="number" id="editPageCount" name="page_count" min="0">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Update Book</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
 
     <script src="dashboard.js"></script>
+    <script src="bookManager.js"></script>
 </body>
 </html>

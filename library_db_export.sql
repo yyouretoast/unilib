@@ -22,7 +22,7 @@ CREATE TABLE `books` (
   `title` varchar(255) NOT NULL,
   `author` varchar(255) NOT NULL,
   `isbn` varchar(20) NOT NULL,
-  `publication_year` int(11) CHECK (publication_year <= YEAR(CURRENT_DATE)),
+  `publication_year` int(11),
   `quantity` int(11) NOT NULL DEFAULT 0 CHECK (quantity >= 0),
   `available_quantity` int(11) NOT NULL DEFAULT 0 CHECK (available_quantity >= 0 AND available_quantity <= quantity),
   `date_added` timestamp NULL DEFAULT current_timestamp(),

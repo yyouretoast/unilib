@@ -3,9 +3,15 @@ const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
-const port = 3000; // Add this line to define the port
+const port = 3000;
 
-app.use(cors());
+// Update CORS configuration to allow all origins in development
+app.use(cors({
+    origin: '*', // Allow all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    credentials: true
+}));
 app.use(express.json());
 
 const db = mysql.createConnection({
@@ -13,7 +19,7 @@ const db = mysql.createConnection({
     user: 'root',
     password: '',
     database: 'library_db',
-    port: 3308
+    port: 3306
 }).promise();
 
 // Test database connection
@@ -32,36 +38,187 @@ function handleError(res, err) {
 }
 
 // Book functions
-function getAllBooks(req, res) {
-    db.query('SELECT * FROM books', (err, results) => {
-        if (err) return handleError(res, err);
-        res.json(results);
-    });
+async function getAllBooks(req, res) {
+    try {
+        const [books] = await db.query(`
+            SELECT b.*, 
+                   COALESCE(AVG(br.rating), 0.00) as average_rating,
+                   COUNT(br.review_id) as review_count
+            FROM books b
+            LEFT JOIN book_reviews br ON b.book_id = br.book_id
+            GROUP BY b.book_id
+            ORDER BY b.date_added DESC`);
+        res.json(books);
+    } catch (err) {
+        handleError(res, err);
+    }
 }
 
-function getBookById(req, res) {
+async function getBookById(req, res) {
     const id = req.params.bookId;
-    db.query('SELECT * FROM books WHERE book_id = ?', [id], (err, results) => {
-        if (err) return handleError(res, err);
-        if (results.length === 0) {
+    try {
+        const [books] = await db.query(`
+            SELECT b.*, 
+                   COALESCE(AVG(br.rating), 0.00) as average_rating,
+                   COUNT(br.review_id) as review_count
+            FROM books b
+            LEFT JOIN book_reviews br ON b.book_id = br.book_id
+            WHERE b.book_id = ?
+            GROUP BY b.book_id`, [id]);
+
+        if (books.length === 0) {
             return res.status(404).json({ message: 'Book not found' });
         }
-        res.json(results[0]);
-    });
+        res.json(books[0]);
+    } catch (err) {
+        handleError(res, err);
+    }
 }
 
-function addBook(req, res) {
-    const { title, author, isbn } = req.body;
+async function addBook(req, res) {
+    const { 
+        title, author, isbn, publication_year, quantity, genre, 
+        description, language, publisher, page_count 
+    } = req.body;
     
     if (!title || !author || !isbn) {
         return res.status(400).json({ message: 'Please provide title, author and ISBN' });
     }
 
-    const query = 'INSERT INTO books (title, author, isbn) VALUES (?, ?, ?)';
-    db.query(query, [title, author, isbn], (err, result) => {
-        if (err) return handleError(res, err);
-        res.status(201).json({ message: 'Book added successfully' });
-    });
+    try {
+        const [existing] = await db.query('SELECT book_id FROM books WHERE isbn = ?', [isbn]);
+        if (existing.length > 0) {
+            return res.status(409).json({ message: 'A book with this ISBN already exists' });
+        }
+
+        const query = `
+            INSERT INTO books (
+                title, author, isbn, publication_year, quantity, 
+                available_quantity, genre, description, language, 
+                publisher, page_count
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        const [result] = await db.query(query, [
+            title, author, isbn, publication_year, quantity,
+            quantity, // initially available_quantity equals quantity
+            genre || null,
+            description || null,
+            language || 'English',
+            publisher || null,
+            page_count || null
+        ]);
+
+        res.status(201).json({ 
+            message: 'Book added successfully',
+            bookId: result.insertId,
+            book: {
+                book_id: result.insertId,
+                title,
+                author,
+                isbn,
+                publication_year,
+                quantity,
+                available_quantity: quantity,
+                genre,
+                description,
+                language,
+                publisher,
+                page_count
+            }
+        });
+    } catch (error) {
+        console.error('Error adding book:', error);
+        if (error.code === 'ER_DUP_ENTRY') {
+            res.status(409).json({ message: 'A book with this ISBN already exists' });
+        } else {
+            res.status(500).json({ message: 'Error adding book', error: error.message });
+        }
+    }
+}
+
+async function updateBook(req, res) {
+    const id = req.params.bookId;
+    const { 
+        title, author, isbn, publication_year, quantity, genre,
+        description, language, publisher, page_count 
+    } = req.body;
+    
+    try {
+        // Check if book exists
+        const [existing] = await db.query('SELECT * FROM books WHERE book_id = ?', [id]);
+        if (existing.length === 0) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        // Calculate new available quantity
+        const quantityDiff = quantity - existing[0].quantity;
+        const newAvailableQuantity = existing[0].available_quantity + quantityDiff;
+        
+        if (newAvailableQuantity < 0) {
+            return res.status(400).json({ message: 'Cannot reduce quantity below number of borrowed books' });
+        }
+
+        const query = `
+            UPDATE books 
+            SET title=?, author=?, isbn=?, publication_year=?, 
+                quantity=?, available_quantity=?, genre=?, description=?, 
+                language=?, publisher=?, page_count=?,
+                last_updated=NOW()
+            WHERE book_id=?`;
+
+        await db.query(query, [
+            title, author, isbn, publication_year,
+            quantity, newAvailableQuantity, genre, description,
+            language, publisher, page_count,
+            id
+        ]);
+
+        res.json({ 
+            message: 'Book updated successfully',
+            book: {
+                book_id: id,
+                title,
+                author,
+                isbn,
+                publication_year,
+                quantity,
+                available_quantity: newAvailableQuantity,
+                genre,
+                description,
+                language,
+                publisher,
+                page_count
+            }
+        });
+    } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+            res.status(409).json({ message: 'A book with this ISBN already exists' });
+        } else {
+            handleError(res, err);
+        }
+    }
+}
+
+async function deleteBook(req, res) {
+    const id = req.params.bookId;
+    try {
+        // Check if book is currently borrowed
+        const [loans] = await db.query(
+            'SELECT COUNT(*) as active_loans FROM loans WHERE book_id = ? AND return_date IS NULL',
+            [id]
+        );
+
+        if (loans[0].active_loans > 0) {
+            return res.status(400).json({ 
+                message: 'Cannot delete book while it has active loans'
+            });
+        }
+
+        await db.query('DELETE FROM books WHERE book_id = ?', [id]);
+        res.json({ message: 'Book deleted successfully' });
+    } catch (err) {
+        handleError(res, err);
+    }
 }
 
 // Member functions
@@ -143,7 +300,10 @@ app.get('/books', async (req, res) => {
     }
 });
 app.get('/books/:bookId', getBookById);
+app.get('/books', getAllBooks);
 app.post('/books', addBook);
+app.put('/books/:bookId', updateBook);
+app.delete('/books/:bookId', deleteBook);
 
 // Member routes
 app.get('/members', getAllMembers);
@@ -166,34 +326,31 @@ app.post('/api/signup', async (req, res) => {
     }
 
     try {
-        // First check if user exists
+        // Check if user exists
         const [existingUsers] = await db.query(
-            'SELECT username, email FROM users WHERE username = ? OR email = ?',
+            'SELECT * FROM users WHERE username = ? OR email = ?',
             [username, email]
         );
 
         if (existingUsers.length > 0) {
-            const exists = existingUsers[0];
-            if (exists.username === username) {
-                return res.status(400).json({ message: 'Username already exists' });
-            }
-            if (exists.email === email) {
-                return res.status(400).json({ message: 'Email already exists' });
-            }
+            return res.status(400).json({ message: 'Username or email already exists' });
         }
 
         // Insert new user
-        await db.query(
-            'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-            [username, email, password]
+        const [result] = await db.query(
+            'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',
+            [username, email, password, 'student'] // Default role as student
         );
 
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({
+            message: 'User created successfully',
+            userId: result.insertId
+        });
     } catch (error) {
         console.error('Signup error:', error);
         res.status(500).json({ 
             message: 'Error creating user',
-            details: error.message 
+            error: error.message 
         });
     }
 });
